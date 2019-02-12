@@ -147,7 +147,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Console3DGraphicsEngine.cpp" />
+    <ClCompile Include="AudioEngine.cpp" />
+    <ClCompile Include="Console3DEngine.cpp" />
+    <ClCompile Include="EngineTestMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AudioEngine.h" />
+    <ClInclude Include="Console3DEngine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

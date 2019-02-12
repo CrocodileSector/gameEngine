@@ -1,0 +1,4 @@
+﻿  Console3DEngine.cpp
+c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\console3dengine.cpp(39): warning C4018: '<': signed/unsigned mismatch
+  Console3DGraphicsEngine.vcxproj -> C:\Users\vlmuntea\source\repos\Console3DGraphicsEngine\Debug\Console3DGraphicsEngine.exe
+  Console3DGraphicsEngine.vcxproj -> C:\Users\vlmuntea\source\repos\Console3DGraphicsEngine\Debug\Console3DGraphicsEngine.pdb (Partial PDB)

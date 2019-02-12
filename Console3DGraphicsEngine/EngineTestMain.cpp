@@ -18,9 +18,37 @@ int main()
 
 
 */
+#include <iostream>
+#include "Console3DEngine.h"
+
+class GameEngine : public ConsoleGameEngine
+{
+public :
+	GameEngine()
+	{
+
+	}
+
+public :
+	bool OnUserCreate() override
+	{
+		return true;
+	}
+
+	bool OnUserUpdate(float fElapsedTime) override
+	{
+		return true;
+	}
+};
+
 
 int main()
 {
+	GameEngine game;
+
+	if (game.ConstructConsole(256, 240, 4, 4))
+		game.Start();
+
     return 0;
 }
 
