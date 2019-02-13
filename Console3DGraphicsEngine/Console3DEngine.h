@@ -146,6 +146,7 @@ public:
 	virtual bool OnUserDestroy() { return true; };
 	
 protected:
+	std::wstring m_sAppName;
 	int m_mousePosX;
 	int m_mousePosY;
 
@@ -175,7 +176,6 @@ private:
 
 	CONSOLE_SCREEN_BUFFER_INFO m_OriginalConsoleInfo;
 	CHAR_INFO* m_screenBuffer;
-	std::wstring m_sAppName;
 
 	AudioEngine* m_pAudioEngine = nullptr;
 

@@ -1,4 +1,6 @@
-﻿  Console3DEngine.cpp
-c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\console3dengine.cpp(39): warning C4018: '<': signed/unsigned mismatch
-  Console3DGraphicsEngine.vcxproj -> C:\Users\vlmuntea\source\repos\Console3DGraphicsEngine\Debug\Console3DGraphicsEngine.exe
-  Console3DGraphicsEngine.vcxproj -> C:\Users\vlmuntea\source\repos\Console3DGraphicsEngine\Debug\Console3DGraphicsEngine.pdb (Partial PDB)
+﻿  EngineTestMain.cpp
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(100): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(171): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(170): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(169): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Console3DGraphicsEngine.vcxproj -> C:\Users\Vlad\source\repos\gameEngine\Debug\Console3DGraphicsEngine.exe
