@@ -3,6 +3,11 @@
 #define _UNICODE
 #endif 
 
+#ifndef DEBUG
+#define DEBUG 1
+#endif // !DEBUG
+
+
 #pragma comment(lib, "winmm.lib")
 
 #include "Console3DEngine.h"
@@ -239,9 +244,9 @@ int ConsoleGameEngine::ConstructConsole(int width, int height, int fontw, int fo
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	if (!GetConsoleScreenBufferInfo(m_hConsoleOut, &csbi))
 		return Error(L"ConstructConsole::GetConsoleScreenBufferInfo");
-	else if (m_nScreenHeight > csbi.dwMaximumWindowSize.Y)
+	else if (m_nScreenHeight < csbi.dwMaximumWindowSize.Y)
 		return Error(L"Screen Height/Font Height too big...");
-	else if (m_nScreenWidth > csbi.dwMaximumWindowSize.X)
+	else if (m_nScreenWidth < csbi.dwMaximumWindowSize.X)
 		return Error(L"Screen Width/Font Width too big...");
 
 	m_windowRect = { 0, 0, (short)m_nScreenWidth - 1, (short)m_nScreenHeight - 1 };
@@ -264,8 +269,61 @@ void ConsoleGameEngine::Draw(int x, int y, short c, short col)
 {
 	if (x >= 0 && x <= m_nScreenWidth && y >= 0 && y <= m_nScreenHeight)
 	{
-		m_screenBuffer[y * m_nScreenHeight + x].Char.UnicodeChar = c;
+		m_screenBuffer[y * m_nScreenWidth + x].Char.UnicodeChar = c;
 		m_screenBuffer[y * m_nScreenWidth + x].Attributes = col;
+	}
+}
+
+void approxCoord(float &coord_i, int &coord_o, float offset)
+{
+	float cOff = (coord_i + offset);
+	float cDecPart = cOff - cOff;
+	if (cDecPart < 0.5)
+		coord_o = std::floor<float, int>(cOff);
+	else
+		coord_o = std::floor<float, int>(cOff);
+}
+	
+void ConsoleGameEngine::DrawLineA(int x1, int y1, int x2, int y2, short c, short col)
+{
+	int dx = x2 - x1;
+	int dy = y2 - y1;
+
+	float xOffset = 0.0f;
+	float yOffset = 0.0f;
+
+	//float m = dy / dx;
+	int dxAbs = std::abs(dx);
+	int dyAbs = std::abs(dy);
+	int steps = (dxAbs > dyAbs) ? dxAbs : dyAbs;
+
+	if (dx != 0)
+		xOffset = dx / steps;
+	if (dy != 0)
+		yOffset = dy / steps;
+	
+	int y = y1;
+	int x = x1;
+
+	for (short i = 0; i < steps; ++i)
+	{
+		Draw(x, y, c, col);
+
+		float xOff = (x + xOffset);
+		float xDecPart = xOff - xOff;
+
+		if (xDecPart != 0.0f && xDecPart < 0.5)
+			x = std::floor<float, int>(xOff);
+		else
+			x = std::floor<float, int>(xOff);
+
+		float yOff = (y + yOffset);
+		float yDecPart = yOff - yOff;
+
+		if (xDecPart != 0.0f && yDecPart < 0.5)
+			y = std::floor<float, int>(yOff);
+		else
+			y = std::floor<float, int>(yOff);
 	}
 }
 
@@ -306,7 +364,7 @@ void ConsoleGameEngine::DrawLine(int x1, int y1, int x2, int y2, short c, short 
 				px = px + 2 * dy1;
 			else
 			{
-				if ((dx < 0 && dy < 0) || (dx > 0 && dy))
+				if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0	))
 					y = y + 1;
 				else
 					y = y - 1;
@@ -332,20 +390,17 @@ void ConsoleGameEngine::DrawLine(int x1, int y1, int x2, int y2, short c, short 
 		}
 
 		Draw(x, y, c, col);
-
 		for (i = 0; y < ye; i++)
 		{
 			y = y + 1;
-
 			if (py <= 0)
 				py = py + 2 * dx1;
 			else
 			{
-				if ((dx<0 && dy<0) || (dx>0 && dy>0)) 
+				if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) 
 					x = x + 1; 
 				else 
 					x = x - 1;
-
 				py = py + 2 * (dx1 - dy1);
 			}
 			Draw(x, y, c, col);
@@ -355,9 +410,12 @@ void ConsoleGameEngine::DrawLine(int x1, int y1, int x2, int y2, short c, short 
 
 void ConsoleGameEngine::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, short c, short col)
 {
-	DrawLine(x1, y1, x2, y2, c, col);
-	DrawLine(x2, y2, x3, y3, c, col);
-	DrawLine(x3, y3, x1, y1, c, col);
+	//Clip(x1, y1);
+	//Clip(x2, y2);
+	//Clip(x3, y3);
+	DrawLineA(x1, y1, x2, y2, c, col);
+	DrawLineA(x2, y2, x3, y3, c, col);
+	DrawLineA(x3, y3, x1, y1, c, col);
 }
 
 void ConsoleGameEngine::DrawCircle(int xc, int yc, int r, short c, short col)
@@ -944,11 +1002,17 @@ void ConsoleGameEngine::gameThread()
 			if (!OnUserUpdate(fElapsedTime))
 				m_bAtomicSwitch = false;
 
-			// Update Title & Present Screen Buffer
+			// Update Title & Write Screen Buffer
+			bool bRenderStatus = false;
 			wchar_t s[256];
+			
 			swprintf_s(s, 256, L"Vlad - Console Game engine - %s - FPS: %3.2f", m_sAppName.c_str(), 1.0f / fElapsedTime);
 			SetConsoleTitle(s);
-			WriteConsoleOutput(m_hConsoleOut, m_screenBuffer, { (short)m_nScreenWidth, (short)m_nScreenHeight }, { 0,0 }, &m_windowRect);
+
+			bRenderStatus = WriteConsoleOutput(m_hConsoleOut, m_screenBuffer, { (short)m_nScreenWidth, (short)m_nScreenHeight }, { 0,0 }, &m_windowRect);
+
+			if (!bRenderStatus)
+				Error(L"Failed to write screen buffer...");
 		}
 
 		if (m_bEnableSound)
@@ -962,6 +1026,12 @@ void ConsoleGameEngine::gameThread()
 		if (OnUserDestroy())
 		{
 			// User has permitted destroy, so exit and clean up
+			for (size_t i = 0; i < m_nScreenHeight * m_nScreenWidth; ++i)
+			{
+				m_screenBuffer[i].Char.UnicodeChar = 0;
+				m_screenBuffer[i].Attributes = 0;
+			}
+
 			delete[] m_screenBuffer;
 			SetConsoleActiveScreenBuffer(m_hOriginalConsole);
 			m_cvQuitGame.notify_one();

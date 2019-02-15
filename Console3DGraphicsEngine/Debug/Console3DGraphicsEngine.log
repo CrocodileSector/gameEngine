@@ -1,6 +1,12 @@
-﻿  EngineTestMain.cpp
-c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(100): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(171): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(170): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\enginetestmain.cpp(169): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+﻿  Console3DEngine.cpp
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(44): warning C4018: '<': signed/unsigned mismatch
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(282): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(284): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(301): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(303): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(316): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(318): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(324): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(326): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\vlad\source\repos\gameengine\console3dgraphicsengine\console3dengine.cpp(1029): warning C4018: '<': signed/unsigned mismatch
   Console3DGraphicsEngine.vcxproj -> C:\Users\Vlad\source\repos\gameEngine\Debug\Console3DGraphicsEngine.exe

@@ -117,6 +117,10 @@ public:
 
 	virtual void Draw(int x, int y, short c = 0x2588, short col = 0x000F); //these fuckin magic numbers man...
 
+	void DrawA(float x, float y, short c, short col);
+
+	void DrawLineA(int x1, int y1, int x2, int y2, short c, short col);
+
 	void DrawLine(int x1, int y1, int x2, int y2, short c = 0x2588, short col = 0x000F);
 
 	void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, short c = 0x2588, short col = 0x000F);

@@ -47,6 +47,7 @@ class GameEngine : public ConsoleGameEngine
 	float fTheta = 0.0f;
 	mesh m_mCube;
 	translationMatrix m_projectionMatrix;
+	translationMatrix m_rotationZ, m_rotationX;
 
 	float DegreeToRadiants(float f)
 	{
@@ -78,14 +79,14 @@ public :
 			{0.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 0.0f},
 			{0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f}, //SOUTH
 
-			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f},
-			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f}, //WEST
+			{1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f},
+			{1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f}, //EAST
 
 			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f},
 			{0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f}, //NORTH
 
-			{1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f},
-			{1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f}, //EAST
+			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f},
+			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f}, //WEST
 
 			{0.0f, 1.0f, 0.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f},
 			{0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f}, //TOP
@@ -97,9 +98,9 @@ public :
 
 		float fov = 90.0f;
 		float zFar = 1000.0f;
-		float zNear = 0.1;
+		float zNear = 0.1f;
 		float aspectRatio = (float)ScreenHeight() / (float)ScreenWidth();
-		float tanEq = 1 / (tanf(DegreeToRadiants(fov)));
+		float tanEq = 1.0f / (tanf(fov * 0.5f / 180.0f * 3.14159f));
 		float zNormalization = zFar / zFar - zNear;
 		float adjustedZnorm = -zNear * zNormalization;
 
@@ -108,48 +109,48 @@ public :
 		m_projectionMatrix.m[2][2] = zNormalization;
 		m_projectionMatrix.m[3][2] = adjustedZnorm;
 		m_projectionMatrix.m[2][3] = 1;
+		
+		m_rotationZ.m[2][2] = 1.0f;
+		m_rotationZ.m[3][3] = 1.0f;
+
+		m_rotationX.m[0][0] = 1.0f;
+		m_rotationX.m[3][3] = 1.0f;
 
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		Fill(0, 0, ScreenHeight(), ScreenWidth(), PIXEL_SOLID, FG_BLACK);
+		Fill(0, ScreenWidth(), 0, ScreenHeight(), PIXEL_SOLID, FG_BLACK);
 
-		fTheta += 1.0f + fElapsedTime;
+		fTheta += 1.0f * fElapsedTime;
 
-		translationMatrix rotationZ, rotationX;
+		m_rotationZ.m[0][0] = cosf(fTheta);
+		m_rotationZ.m[0][1] = sinf(fTheta);
+		m_rotationZ.m[1][0] = -sinf(fTheta);
+		m_rotationZ.m[1][1] = cosf(fTheta);
 
-		rotationZ.m[0][0] = cosf(fTheta);
-		rotationZ.m[0][1] = sinf(fTheta);
-		rotationZ.m[1][0] = -sinf(fTheta);
-		rotationZ.m[1][1] = cosf(fTheta);
-		rotationZ.m[2][2] = 1.0f;
-		rotationZ.m[3][3] = 1.0f;
-
-		rotationZ.m[0][0] = 1.0f;
-		rotationZ.m[1][1] = cosf	(fTheta * 0.5f);
-		rotationZ.m[1][2] = sinf(fTheta * 0.5f);
-		rotationZ.m[2][1] = -sinf(fTheta * 0.5f);
-		rotationZ.m[2][2] = cosf(fTheta * 0.5f);
-		rotationZ.m[3][3] = 1.0f;
+		m_rotationX.m[1][1] = cosf(fTheta * 0.5f);
+		m_rotationX.m[1][2] = sinf(fTheta * 0.5f);
+		m_rotationX.m[2][1] = -sinf(fTheta * 0.5f);
+		m_rotationX.m[2][2] = cosf(fTheta * 0.5f);
 
 		for (auto tri : m_mCube.tris)
 		{
 			triangle projectedTri, translatedTri, rotatedZtri, rotatedXtri;
 
-			TranslateVector(tri.v[0], rotatedZtri.v[0], rotationZ);
-			TranslateVector(tri.v[1], rotatedZtri.v[1], rotationZ);
-			TranslateVector(tri.v[2], rotatedZtri.v[2], rotationZ);
+			TranslateVector(tri.v[0], rotatedZtri.v[0], m_rotationZ);
+			TranslateVector(tri.v[1], rotatedZtri.v[1], m_rotationZ);
+			TranslateVector(tri.v[2], rotatedZtri.v[2], m_rotationZ);
 
-			TranslateVector(rotatedZtri.v[0], rotatedXtri.v[0], rotationX);
-			TranslateVector(rotatedZtri.v[1], rotatedXtri.v[1], rotationX);
-			TranslateVector(rotatedZtri.v[2], rotatedXtri.v[2], rotationX);
+			TranslateVector(rotatedZtri.v[0], rotatedXtri.v[0], m_rotationX);
+			TranslateVector(rotatedZtri.v[1], rotatedXtri.v[1], m_rotationX);
+			TranslateVector(rotatedZtri.v[2], rotatedXtri.v[2], m_rotationX);
 
 			translatedTri = rotatedXtri;
-			translatedTri.v[0].z = rotatedXtri.v[0].z + 1.0f;
-			translatedTri.v[1].z = rotatedXtri.v[1].z + 1.0f;
-			translatedTri.v[2].z = rotatedXtri.v[2].z + 1.0f;
+			translatedTri.v[0].z = rotatedXtri.v[0].z + 3.0f;
+			translatedTri.v[1].z = rotatedXtri.v[1].z + 3.0f;
+			translatedTri.v[2].z = rotatedXtri.v[2].z + 3.0f;
 
 			TranslateVector(translatedTri.v[0], projectedTri.v[0], m_projectionMatrix);
 			TranslateVector(translatedTri.v[1], projectedTri.v[1], m_projectionMatrix);
@@ -181,7 +182,7 @@ int main()
 {
 	GameEngine game;
 
-	if (game.ConstructConsole(256, 240, 4, 4))
+	if (game.ConstructConsole(480, 254, 4, 4))
 		game.Start();
 
     return 0;
