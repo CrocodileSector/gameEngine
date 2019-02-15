@@ -59,7 +59,7 @@ class GameEngine : public ConsoleGameEngine
 		out.x = in.x * m.m[0][0] + in.y * m.m[1][0] + in.z * m.m[2][0] + m.m[3][0];
 		out.y = in.x * m.m[0][1] + in.y * m.m[1][1] + in.z * m.m[2][1] + m.m[3][1];
 		out.z = in.x * m.m[0][2] + in.y * m.m[1][2] + in.z * m.m[2][2] + m.m[3][2];
-		float w = in.x * m.m[0][2] + in.y * m.m[1][2] + m.m[2][2] + in.z * m.m[3][3]; //get Z to divide by it
+		float w = in.x * m.m[0][3] + in.y * m.m[1][3] + in.z * m.m[2][3] + m.m[3][3]; //get Z to divide by it
 
 		if (w != 0.0f)
 		{
@@ -70,29 +70,29 @@ class GameEngine : public ConsoleGameEngine
 	}
 
 public :
-	GameEngine() { m_sAppName = L"bao"; }
+	GameEngine() { m_sAppName = L"Cube"; }
 
 	bool OnUserCreate() override
 	{
 		m_mCube.tris =
 		{
 			{0.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 0.0f},
-			{0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f}, //SOUTH
+			{0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f}, //SOUTH FACE
 
 			{1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f},
-			{1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f}, //EAST
+			{1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f}, //EAST FACE
 
-			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f},
-			{0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f}, //NORTH
+			{1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f},
+			{1.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f}, //NORTH FACE
 
 			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f},
-			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f}, //WEST
+			{0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f}, //WEST FACE
 
 			{0.0f, 1.0f, 0.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f},
-			{0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f}, //TOP
+			{0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f}, //TOP FACE
 
-			{0.0f, 0.0f, 0.0f,    0.0f, 0.0f, 1.0f,    1.0f, 0.0f, 1.0f},
-			{0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 1.0f,    1.0f, 0.0f, 0.0f}, //BOT
+			{1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f},
+			{1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f}, //BOT FACE
 
 		};
 
@@ -148,17 +148,17 @@ public :
 			TranslateVector(rotatedZtri.v[2], rotatedXtri.v[2], m_rotationX);
 
 			translatedTri = rotatedXtri;
-			translatedTri.v[0].z = rotatedXtri.v[0].z + 3.0f;
-			translatedTri.v[1].z = rotatedXtri.v[1].z + 3.0f;
-			translatedTri.v[2].z = rotatedXtri.v[2].z + 3.0f;
+			translatedTri.v[0].z = rotatedXtri.v[0].z + 1.5f;
+			translatedTri.v[1].z = rotatedXtri.v[1].z + 1.5f;
+			translatedTri.v[2].z = rotatedXtri.v[2].z + 1.5f;
 
 			TranslateVector(translatedTri.v[0], projectedTri.v[0], m_projectionMatrix);
 			TranslateVector(translatedTri.v[1], projectedTri.v[1], m_projectionMatrix);
 			TranslateVector(translatedTri.v[2], projectedTri.v[2], m_projectionMatrix);
 
-			projectedTri.v[0].x += 1; projectedTri.v[0].y += 1;
-			projectedTri.v[1].x += 1; projectedTri.v[1].y += 1;
-			projectedTri.v[2].x += 1; projectedTri.v[2].y += 1;
+			projectedTri.v[0].x += 1.0f; projectedTri.v[0].y += 1.0f;
+			projectedTri.v[1].x += 1.0f; projectedTri.v[1].y += 1.0f;
+			projectedTri.v[2].x += 1.0f; projectedTri.v[2].y += 1.0f;
 
 			projectedTri.v[0].x *= 0.3f * (float)ScreenWidth();
 			projectedTri.v[0].y *= 0.3f * (float)ScreenHeight();
@@ -182,7 +182,7 @@ int main()
 {
 	GameEngine game;
 
-	if (game.ConstructConsole(480, 254, 4, 4))
+	if (game.ConstructConsole(256, 240, 4, 4))
 		game.Start();
 
     return 0;

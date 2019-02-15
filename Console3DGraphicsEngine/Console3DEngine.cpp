@@ -269,19 +269,13 @@ void ConsoleGameEngine::Draw(int x, int y, short c, short col)
 {
 	if (x >= 0 && x <= m_nScreenWidth && y >= 0 && y <= m_nScreenHeight)
 	{
-		m_screenBuffer[y * m_nScreenWidth + x].Char.UnicodeChar = c;
-		m_screenBuffer[y * m_nScreenWidth + x].Attributes = col;
+		size_t screenOffset = y * m_nScreenWidth + x;
+		if (screenOffset < m_nScreenHeight * m_nScreenWidth)
+		{
+			m_screenBuffer[screenOffset].Char.UnicodeChar = c;
+			m_screenBuffer[screenOffset].Attributes = col;
+		}
 	}
-}
-
-void approxCoord(float &coord_i, int &coord_o, float offset)
-{
-	float cOff = (coord_i + offset);
-	float cDecPart = cOff - cOff;
-	if (cDecPart < 0.5)
-		coord_o = std::floor<float, int>(cOff);
-	else
-		coord_o = std::floor<float, int>(cOff);
 }
 	
 void ConsoleGameEngine::DrawLineA(int x1, int y1, int x2, int y2, short c, short col)
@@ -413,9 +407,9 @@ void ConsoleGameEngine::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int
 	//Clip(x1, y1);
 	//Clip(x2, y2);
 	//Clip(x3, y3);
-	DrawLineA(x1, y1, x2, y2, c, col);
-	DrawLineA(x2, y2, x3, y3, c, col);
-	DrawLineA(x3, y3, x1, y1, c, col);
+	DrawLine(x1, y1, x2, y2, c, col);
+	DrawLine(x2, y2, x3, y3, c, col);
+	DrawLine(x3, y3, x1, y1, c, col);
 }
 
 void ConsoleGameEngine::DrawCircle(int xc, int yc, int r, short c, short col)
