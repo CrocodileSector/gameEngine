@@ -1,4 +1,32 @@
-﻿  EngineTestMain.cpp
+﻿  LogMain.cpp
+  GameLogger.cpp
+c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(11): error C2955: 'Logger': use of class template requires template argument list
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.h(17): note: see declaration of 'Logger'
+c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(12): error C2244: 'Logger::Logger': unable to match function definition to an existing declaration
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(11): note: see declaration of 'Logger::Logger'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(12): note: definition
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(12): note: 'Logger::Logger(void)'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(12): note: existing declarations
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(12): note: 'Logger<OutputPolicy>::Logger(void)'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(12): note: 'Logger<OutputPolicy>::Logger(const Logger<OutputPolicy> &)'
+c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(17): error C2244: 'Logger::LevelToString': unable to match function definition to an existing declaration
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(16): note: see declaration of 'Logger::LevelToString'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(17): note: definition
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(17): note: 'std::string Logger::LevelToString(eLogLevel)'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(17): note: existing declarations
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(17): note: 'std::string Logger<OutputPolicy>::LevelToString(eLogLevel)'
+c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(42): error C2244: 'Logger::Get': unable to match function definition to an existing declaration
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(41): note: see declaration of 'Logger::Get'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(42): note: definition
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(42): note: 'std::ostringstream &Logger::Get(eLogLevel)'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(42): note: existing declarations
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(42): note: 'std::ostringstream &Logger<OutputPolicy>::Get(eLogLevel)'
+c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(54): error C2244: 'Logger::~Logger': unable to match function definition to an existing declaration
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(53): note: see declaration of 'Logger::~Logger'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(54): note: definition
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(54): note: 'Logger::~Logger(void) noexcept'
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(54): note: existing declarations
+  c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\gamelogger.cpp(54): note: 'Logger<OutputPolicy>::~Logger(void)'
+  EngineTestMain.cpp
 c:\users\vlmuntea\source\repos\console3dgraphicsengine\console3dgraphicsengine\enginetestmain.cpp(173): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Console3DGraphicsEngine.vcxproj -> C:\Users\vlmuntea\source\repos\Console3DGraphicsEngine\Debug\Console3DGraphicsEngine.exe
-  Console3DGraphicsEngine.vcxproj -> C:\Users\vlmuntea\source\repos\Console3DGraphicsEngine\Debug\Console3DGraphicsEngine.pdb (Partial PDB)
+  Generating Code...

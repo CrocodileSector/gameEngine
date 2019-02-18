@@ -148,9 +148,9 @@ public :
 			TranslateVector(rotatedZtri.v[2], rotatedXtri.v[2], m_rotationX);
 
 			translatedTri = rotatedXtri;
-			translatedTri.v[0].z = rotatedXtri.v[0].z + 1.5f;
-			translatedTri.v[1].z = rotatedXtri.v[1].z + 1.5f;
-			translatedTri.v[2].z = rotatedXtri.v[2].z + 1.5f;
+			translatedTri.v[0].z = rotatedXtri.v[0].z + 5.0f;
+			translatedTri.v[1].z = rotatedXtri.v[1].z + 5.0f;
+			translatedTri.v[2].z = rotatedXtri.v[2].z + 5.0f;
 
 			TranslateVector(translatedTri.v[0], projectedTri.v[0], m_projectionMatrix);
 			TranslateVector(translatedTri.v[1], projectedTri.v[1], m_projectionMatrix);
@@ -178,7 +178,7 @@ public :
 };
 
 
-int main()
+/*int main()
 {
 	GameEngine game;
 
@@ -186,5 +186,5 @@ int main()
 		game.Start();
 
     return 0;
-}
+}*/
 
