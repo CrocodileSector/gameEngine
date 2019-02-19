@@ -15,8 +15,7 @@ int main()
 		LOG(LOG_LEVEL) << " counter's at " << i;
 	}*/
 
-	FILE* logFile = fopen("test.log", "a");
-	FilePolicy::SetStream(logFile);
+	//FilePolicy::SetFile(std::string("test.log"));
 
 	FILE_LOG(LOG_LEVEL) << "A loop with " << count << " iterations";
 

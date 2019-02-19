@@ -1,11 +1,13 @@
 #pragma once
+
+#include "Util.h"
+
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <mutex>
-#include <chrono>
-#include <ctime>
 
+const std::string sDefaultLogFile = "game-engine-log-";
 const std::string sError = "ERROR";
 const std::string sWarning = "WARNING";
 const std::string sInfo = "INFO";
@@ -20,7 +22,7 @@ template <typename OutputPolicy>
 class Logger
 {
 	eLogLevel m_messageLevel;
-	static inline eLogLevel m_loggerLevel = LogDebug;
+	static const eLogLevel m_loggerLevel = LogDebug;
 
 	Logger(const Logger&);
 	Logger& operator = (const Logger&);
@@ -58,16 +60,16 @@ public:
 
 	std::ostringstream& Get(eLogLevel level)
 	{
-		std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-		m_outputStream << "- " << std::ctime(&now);
+		std::string timestamp = Util::GetTimestamp();
+		m_outputStream << "- " << timestamp;
 		m_outputStream << " " << LevelToString(level) << ": ";
 		m_outputStream << std::string(level > eLogLevel::LogDebug ? 0 : level - eLogLevel::LogDebug + "\t");
 		m_messageLevel = level;
 
 		return m_outputStream;
 	}
-
-	static eLogLevel& LoggingLevel() { return m_loggerLevel; }
+	 
+	static const eLogLevel& LoggingLevel() { return m_loggerLevel; }
 
 	Logger::~Logger()
 	{
@@ -84,58 +86,28 @@ public:
 	static void Output(const std::string& msg);
 };
 
-inline void StdErrPolicy::Output(const std::string& msg)
-{
-	std::scoped_lock<std::recursive_mutex> lock(m_defaultMutex);
-
-	FILE* pStream = stderr;
-	if (!pStream)
-		return;
-
-	fprintf(pStream, "%s", msg.c_str());
-	fflush(pStream);
-}
-
 class FilePolicy 
 {
 private:
 	static FILE*& StreamImpl();
 	static std::recursive_mutex m_fileMutex;
+	static std::string m_filePath;
 public:
-	static void SetStream(FILE* pFile);
+	static void SetFile(const std::string& pFile);
 	static void Output(const std::string& msg);
-	static bool StreamExists() { return (StreamImpl()) ? true : false; }
+	static bool StreamExists() 
+	{
+		if (StreamImpl())
+			return true;
+		else 
+			return false;
+	}
 
 };
 
-inline FILE*& FilePolicy::StreamImpl()
-{
-	static FILE* pStream = stderr;
-	return pStream;
-}
-
-inline void FilePolicy::SetStream(FILE* pFile)
-{
-	std::scoped_lock<std::recursive_mutex> lock(m_fileMutex);
-	FilePolicy::StreamImpl() = pFile;
-}
-
-inline void FilePolicy::Output(const std::string& msg)
-{
-	std::scoped_lock<std::recursive_mutex> lock(m_fileMutex);
-
-	FILE* pStream = StreamImpl();
-
-	if (!pStream)
-		return;
-
-	fprintf(pStream, "%s", msg.c_str());
-	fflush(pStream);
-}
-
 typedef Logger<FilePolicy> FileLog;
 #define FILE_LOG(level) \
-	if (level > FileLog::LoggingLevel() || FilePolicy::StreamExists()) ; \
+	if (level > FileLog::LoggingLevel() /*|| !FilePolicy::StreamExists()*/) ; \
 		else FileLog().Get(level)
 
 typedef Logger<StdErrPolicy> Log;
