@@ -1,7 +1,6 @@
 ========================================================================
     CONSOLE APPLICATION : [!output PROJECT_NAME] Project Overview
 ========================================================================
-
 AppWizard has created this [!output PROJECT_NAME] application for you.
 
 This file contains a summary of what you will find in each of the files that
