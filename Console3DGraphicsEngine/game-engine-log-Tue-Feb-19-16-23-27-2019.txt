@@ -1,0 +1,4 @@
+- Tue-Feb-19-16-23-27-2019 DEBUG: 	A loop with 3 iterations
+- Tue-Feb-19-16-23-27-2019 DEBUG: 	 counter's at 0
+- Tue-Feb-19-16-23-27-2019 DEBUG: 	 counter's at 1
+- Tue-Feb-19-16-23-27-2019 DEBUG: 	 counter's at 2
